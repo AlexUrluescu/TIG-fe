@@ -1,0 +1,138 @@
+"use client";
+import { Button, ConfigProvider, Flex } from "antd";
+import { useState, useMemo } from "react";
+import { DataTable } from "./DataTable";
+import type { ColumnsType } from "antd/es/table";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Organisation } from "@/types/organisation";
+
+interface OrganisationsCardProps {
+  organisations: Organisation[];
+  title: string;
+  height?: string;
+  showDrawer: (type: string, device: Organisation) => void;
+}
+
+const OrganisationsCard: React.FC<OrganisationsCardProps> = ({
+  organisations,
+  title,
+  height,
+  showDrawer,
+}) => {
+  const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
+  const router = useRouter();
+
+  const columns: ColumnsType<Organisation> = [
+    {
+      title: "Organisation Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text: string, record: Organisation) => {
+        const statusColors: Record<string, string> = {
+          online: "#34C759",
+          failed: "#EA2227",
+          denied: "#808181",
+        };
+
+        const dotColor = statusColors[record.status.toLowerCase()] || "#261b1b";
+
+        return (
+          <Flex align="center" gap={10}>
+            <span className="font-medium text-[#333F49]">{text}</span>
+          </Flex>
+        );
+      },
+    },
+    { title: "Code", dataIndex: "code", key: "code" },
+    { title: "Type", dataIndex: "organisationType", key: "organisationType" },
+    { title: "Status", dataIndex: "status", key: "status" },
+    {
+      title: "",
+      dataIndex: "action",
+      key: "action",
+      render: (_text: string, organisation: Organisation) => {
+        return (
+          <Button
+            style={{
+              border: "none",
+              background: "transparent",
+              boxShadow: "none",
+            }}
+            onClick={() => showDrawer("organisation", organisation)}
+          >
+            <Image
+              src="/info-gateway.svg"
+              width={18}
+              height={18}
+              alt="info icon"
+              className="cursor-pointer hover:opacity-70 transition-opacity"
+            />
+          </Button>
+        );
+      },
+    },
+  ];
+
+  const sortedOrganisations = useMemo(() => {
+    const data = [...organisations];
+    return sortOrder === "newest" ? data.reverse() : data;
+  }, [sortOrder]);
+
+  return (
+    <div
+      style={{ gap: 10, maxHeight: height ? height : "338px" }}
+      className="bg-white rounded-xl w-full flex flex-col px-4 lg:px-6 py-6 border border-[#DDDDDD]"
+    >
+      <Flex justify="space-between" align="center" gap={8} className="mb-4">
+        <div className="text-[#333F49] text-xl font-semibold leading-normal tracking-[-0.2px]">
+          {title}
+        </div>
+
+        <Flex gap={5}>
+          <Button>Sort</Button>
+          <Button>Filter</Button>
+        </Flex>
+      </Flex>
+      <div className="rounded-xl pb-6 flex-row relative overflow-auto overflow-x-visible flex-1 min-h-0">
+        <ConfigProvider
+          theme={{
+            components: {
+              Table: {
+                headerBg: "#ffffff",
+                headerSplitColor: "transparent",
+              },
+            },
+          }}
+        >
+          <DataTable<Organisation>
+            rowKey={(r) => r.id}
+            columns={columns}
+            dataSource={sortedOrganisations}
+            onRowClick={(row) => {
+              console.log("Clicked ID:", row.id);
+            }}
+            ariaLabel="Organisations list"
+            className="applications-table ant-table-content"
+          />
+        </ConfigProvider>
+      </div>
+      {organisations.length > 0 && (
+        <div
+          style={{ display: "flex", justifyContent: "end" }}
+          className="mt-4 pt-3 border-t border-[#e0e0e0]"
+        >
+          <button
+            onClick={() => router.push("/organisations")}
+            className="text-sm text-[#000000] hover:text-[#0539a8] flex items-center gap-1 cursor-pointer"
+          >
+            View all
+            <span>→</span>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default OrganisationsCard;

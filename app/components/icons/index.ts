@@ -1,0 +1,8 @@
+export { HomeIcon } from './HomeIcon'
+export { DiagramsIcon } from './DiagramsIcon'
+export { BellIcon } from './BellIcon'
+export { ApplicationDetailsIcon } from './ApplicationDetailsIcon'
+export { OverviewIcon } from './OverviewIcon'
+export { DocumentationIcon } from './DocumentationIcon'
+export { DiagramIcon } from './DiagramIcon'
+export { CompareVersionsIcon } from './CompareVersionsIcon'
