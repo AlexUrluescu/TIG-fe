@@ -64,10 +64,10 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
           marginTop: 8,
         }}
       >
-        <Text type="secondary" style={{ fontSize: 12 }}>
+        <Text type="secondary" style={{ fontSize: 8 }}>
           {startTime}
         </Text>
-        <Text type="secondary" style={{ fontSize: 12 }}>
+        <Text type="secondary" style={{ fontSize: 8 }}>
           {endTime}
         </Text>
       </div>

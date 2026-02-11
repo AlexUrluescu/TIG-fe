@@ -134,8 +134,6 @@ const MOCK_ONLINE_DEVICES: Device[] = [
   },
 ];
 
-const MOCK_DOWN_DEVICES_EMPLTY: Device[] = [];
-
 interface DevicesViewProps {
   devices: boolean;
   setSelectedDevice: (device: Device) => void;

@@ -93,8 +93,19 @@ const GatwewaysCard: React.FC<GatewaysCardProps> = ({
         </div>
 
         <Flex gap={5}>
-          <Button>Sort</Button>
-          <Button>Filter</Button>
+          <Button style={{ display: "flex", gap: 3 }}>
+            <Image src={"/sort.svg"} height={10} width={10} alt="sort-icon" />{" "}
+            <span style={{ fontSize: 12 }}>Sort</span>
+          </Button>
+          <Button style={{ display: "flex", gap: 3 }}>
+            <Image
+              src={"/filter.svg"}
+              height={10}
+              width={10}
+              alt="filter-icon"
+            />{" "}
+            <span style={{ fontSize: 12 }}>Filter</span>
+          </Button>
         </Flex>
       </Flex>
       <div className="rounded-xl pb-6 flex-row relative overflow-auto overflow-x-visible flex-1 min-h-0">

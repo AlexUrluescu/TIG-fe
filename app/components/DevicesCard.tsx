@@ -6,6 +6,14 @@ import { useState, useMemo } from "react";
 import { DataTable } from "./DataTable";
 import type { ColumnsType } from "antd/es/table";
 import Image from "next/image";
+import StatusTimeline from "./StatusTimeline";
+
+const data = [
+  { status: "off", percent: 10 },
+  { status: "online", percent: 50 },
+  { status: "standby", percent: 30 },
+  { status: "off", percent: 10 },
+] as const;
 
 export const MOCK_DEVICES: Device[] = [
   {
@@ -74,19 +82,6 @@ const DevicesCard: React.FC<DownsDevicesCardProps> = ({
 }) => {
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
-  const getStatusClass = (status: string) => {
-    switch (status) {
-      case "online":
-        return "bg-[#52c41a]";
-      case "denied":
-        return "bg-[#bfbfbf]";
-      case "failed":
-        return "bg-[#ff4d4f]";
-      default:
-        return "bg-black";
-    }
-  };
-
   const columns: ColumnsType<Device> = [
     {
       title: "Type",
@@ -142,6 +137,9 @@ const DevicesCard: React.FC<DownsDevicesCardProps> = ({
       title: "Runtime",
       dataIndex: "runtime",
       key: "runtime",
+      render: () => (
+        <StatusTimeline segments={data} startTime="09:00" endTime="17:00" />
+      ),
     },
     {
       title: "Last update",
@@ -190,8 +188,19 @@ const DevicesCard: React.FC<DownsDevicesCardProps> = ({
         </div>
 
         <Flex gap={5}>
-          <Button>Sort</Button>
-          <Button>Filter</Button>
+          <Button style={{ display: "flex", gap: 3 }}>
+            <Image src={"/sort.svg"} height={10} width={10} alt="sort-icon" />{" "}
+            <span style={{ fontSize: 12 }}>Sort</span>
+          </Button>
+          <Button style={{ display: "flex", gap: 3 }}>
+            <Image
+              src={"/filter.svg"}
+              height={10}
+              width={10}
+              alt="filter-icon"
+            />{" "}
+            <span style={{ fontSize: 12 }}>Filter</span>
+          </Button>
         </Flex>
       </Flex>
       <div className="mb-6 rounded-xl pb-6 flex-row relative overflow-auto overflow-x-visible flex-1 min-h-0">

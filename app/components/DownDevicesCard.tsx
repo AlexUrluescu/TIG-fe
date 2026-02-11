@@ -6,6 +6,14 @@ import { useState, useMemo } from "react";
 import { DataTable } from "./DataTable";
 import type { ColumnsType } from "antd/es/table";
 import Image from "next/image";
+import StatusTimeline from "./StatusTimeline";
+
+const data = [
+  { status: "off", percent: 10 },
+  { status: "online", percent: 50 },
+  { status: "standby", percent: 30 },
+  { status: "off", percent: 10 },
+] as const;
 
 export const MOCK_DEVICES: Device[] = [
   {
@@ -118,6 +126,9 @@ const DevicesCardTabel: React.FC<DevicesCardTabelProps> = ({ showDrawer }) => {
       title: "Runtime",
       dataIndex: "runtime",
       key: "runtime",
+      render: () => (
+        <StatusTimeline segments={data} startTime="09:00" endTime="17:00" />
+      ),
     },
     {
       title: "Last update",
