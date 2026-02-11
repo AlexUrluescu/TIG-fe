@@ -10,12 +10,16 @@ const NotificationsView: React.FC<DevicesViewProps> = ({ notifications }) => {
   return notifications ? (
     <Flex
       vertical
-      gap={18}
+      align="start"
+      gap={12}
       style={{
         width: "100%",
         padding: "0px 24px",
       }}
     >
+      <span style={{ fontSize: 20, fontWeight: 700, padding: "0px 10px" }}>
+        Notifications
+      </span>
       <NotificationCard />
     </Flex>
   ) : (
