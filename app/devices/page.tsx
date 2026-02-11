@@ -6,6 +6,14 @@ import Image from "next/image";
 import { Device } from "../components/DevicesCard";
 import DevicesView from "../../views/devices";
 import { userRole } from "@/mocks/userRole";
+import StatusTimeline from "../components/StatusTimeline";
+
+const data = [
+  { status: "off", percent: 10 },
+  { status: "online", percent: 50 },
+  { status: "standby", percent: 30 },
+  { status: "off", percent: 10 },
+] as const;
 
 export default function DevicesPage() {
   const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
@@ -80,7 +88,11 @@ export default function DevicesPage() {
                       {selectedDevice.status}
                     </span>
                   </Flex>
-                  <div>timespan</div>
+                  <StatusTimeline
+                    segments={data}
+                    startTime="09:00"
+                    endTime="17:00"
+                  />
                 </Flex>
               </Flex>
 

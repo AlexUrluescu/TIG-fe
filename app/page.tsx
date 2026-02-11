@@ -132,7 +132,11 @@ export default function HomePage() {
                     {selectedDevice.status}
                   </span>
                 </Flex>
-                <div>timespan</div>
+                <StatusTimeline
+                  segments={data}
+                  startTime="09:00"
+                  endTime="17:00"
+                />
               </Flex>
             </Flex>
 
