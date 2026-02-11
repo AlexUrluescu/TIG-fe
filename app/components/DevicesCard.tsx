@@ -1,7 +1,6 @@
 "use client";
 
-import { Button, ConfigProvider, Drawer, Flex } from "antd";
-import { SortButton } from "./SortButton";
+import { Button, ConfigProvider, Flex } from "antd";
 import { useState, useMemo } from "react";
 import { DataTable } from "./DataTable";
 import type { ColumnsType } from "antd/es/table";
@@ -172,9 +171,21 @@ const DevicesCard: React.FC<DownsDevicesCardProps> = ({
     },
   ];
 
-  const sortedGateways = useMemo(() => {
-    const data = [...devices];
-    return sortOrder === "newest" ? data.reverse() : data;
+  const sortedDevices = useMemo(() => {
+    const data = [...MOCK_DEVICES];
+
+    data.sort((a, b) => {
+      const dateA = new Date(a.lastUpdate).getTime();
+      const dateB = new Date(b.lastUpdate).getTime();
+
+      if (sortOrder === "newest") {
+        return dateB - dateA;
+      } else {
+        return dateA - dateB;
+      }
+    });
+
+    return data;
   }, [sortOrder]);
 
   return (
@@ -188,9 +199,14 @@ const DevicesCard: React.FC<DownsDevicesCardProps> = ({
         </div>
 
         <Flex gap={5}>
-          <Button style={{ display: "flex", gap: 3 }}>
+          <Button
+            onClick={() =>
+              setSortOrder((prev) => (prev === "newest" ? "oldest" : "newest"))
+            }
+            style={{ display: "flex", gap: 3 }}
+          >
             <Image src={"/sort.svg"} height={10} width={10} alt="sort-icon" />{" "}
-            <span style={{ fontSize: 12 }}>Sort</span>
+            <span style={{ fontSize: 12 }}>{sortOrder}</span>
           </Button>
           <Button style={{ display: "flex", gap: 3 }}>
             <Image
@@ -217,7 +233,7 @@ const DevicesCard: React.FC<DownsDevicesCardProps> = ({
           <DataTable<Device>
             rowKey={(r) => r.id}
             columns={columns}
-            dataSource={sortedGateways}
+            dataSource={sortedDevices}
             onRowClick={(row) => {
               console.log("Clicked ID:", row.id);
             }}

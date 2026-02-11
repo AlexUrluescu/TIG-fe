@@ -16,7 +16,6 @@ interface ClientsCardTabelProps {
 const ClientsCardTabel: React.FC<ClientsCardTabelProps> = ({ showDrawer }) => {
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
-  // Memoize the sorted data
   const sortedClients = useMemo(() => {
     const data = [...MOCK_CLIENTS];
     return sortOrder === "newest" ? data.reverse() : data;
@@ -85,7 +84,7 @@ const ClientsCardTabel: React.FC<ClientsCardTabelProps> = ({ showDrawer }) => {
             components: {
               Table: {
                 headerBg: "#ffffff",
-                headerSplitColor: "transparent", // Removes dividers
+                headerSplitColor: "transparent",
               },
             },
           }}

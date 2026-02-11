@@ -35,7 +35,6 @@ export const MOCK_GATEWAYS: Reseller[] = [
   },
 ];
 
-// Changed to 'type' to satisfy the Record constraint
 export type Reseller = {
   id: string;
   name: string;
@@ -44,7 +43,7 @@ export type Reseller = {
 
 const columns: ColumnsType<Reseller> = [
   {
-    title: "Reseller Name",
+    title: "Name",
     dataIndex: "name",
     key: "name",
   },
@@ -82,7 +81,7 @@ const ResellersCardTabel = () => {
     >
       <Flex justify="space-between" align="center" gap={8} className="mb-4">
         <div className="text-[#333F49] text-xl font-semibold leading-normal tracking-[-0.2px]">
-          Gateways List
+          Organisations
         </div>
         <SortButton
           sortOrder={sortOrder}
@@ -100,7 +99,7 @@ const ResellersCardTabel = () => {
             components: {
               Table: {
                 headerBg: "#ffffff",
-                headerSplitColor: "transparent", // Removes dividers
+                headerSplitColor: "transparent",
               },
             },
           }}

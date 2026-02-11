@@ -74,17 +74,17 @@ export default function HomePage() {
   return (
     <div style={{ padding: 25 }} className="min-h-[calc(100vh-64px)]">
       <WelcomeHeader username={"Alexandre"} />
-      <Flex vertical gap={20}>
+      <Flex vertical gap={5}>
         <DevicesCardTabel showDrawer={showDrawer} />
-        <Flex gap={10}>
+        <Flex gap={20}>
           <NotificationsMetricCard />
           <GatwewaysCard
             gateways={MOCK_GATEWAYS}
-            title="Gateways"
+            title="Gateways List"
             showDrawer={showDrawer}
           />
         </Flex>
-        <Flex gap={10}>
+        <Flex gap={20}>
           <ResellersCardTabel />
           <ClientsCardTabel showDrawer={showDrawer} />
         </Flex>

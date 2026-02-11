@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Button, Flex, Input, Pagination, Select, ConfigProvider } from "antd";
-import { useRouter } from "next/navigation";
 import { MOCK_NOTIFICATIONS } from "@/mocks/notifications";
 import { NotificationItemRow } from "@/app/components/NotificationItemRow";
+import Image from "next/image";
 
 export function NotificationCard() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
+  const [searchText, setSearchText] = useState("");
 
   const notifications = MOCK_NOTIFICATIONS;
 
@@ -20,18 +21,35 @@ export function NotificationCard() {
     console.log("review", id);
   };
 
-  const displayNotifications = React.useMemo(() => {
-    const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    return notifications.slice(startIndex, endIndex);
-  }, [notifications, currentPage, pageSize]);
-
   const onPageChange = (page: number) => {
     setCurrentPage(page);
   };
 
   const onPageSizeChange = (value: number) => {
     setPageSize(value);
+    setCurrentPage(1);
+  };
+
+  const filteredNotifications = useMemo(() => {
+    if (!searchText) return notifications;
+
+    const lowerText = searchText.toLowerCase();
+
+    return notifications.filter((n) => {
+      const titleMatch = n.title?.toLowerCase().includes(lowerText);
+
+      return titleMatch;
+    });
+  }, [notifications, searchText]);
+
+  const displayNotifications = useMemo(() => {
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return filteredNotifications.slice(startIndex, endIndex);
+  }, [filteredNotifications, currentPage, pageSize]);
+
+  const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
     setCurrentPage(1);
   };
 
@@ -43,14 +61,26 @@ export function NotificationCard() {
       <Flex justify="space-between" align="center" gap={8} className="mb-4">
         <div style={{ width: "40%" }}>
           <Input
+            onChange={onSearchChange}
             style={{ borderRadius: 26, background: "#F7F7F8" }}
             placeholder="Search"
           />
         </div>
 
         <Flex justify="end" gap={5} style={{ width: "60%" }}>
-          <Button>Sort</Button>
-          <Button>Filter</Button>
+          <Button style={{ display: "flex", gap: 3 }}>
+            <Image src={"/sort.svg"} height={10} width={10} alt="sort-icon" />{" "}
+            <span style={{ fontSize: 12 }}>Sort</span>
+          </Button>
+          <Button style={{ display: "flex", gap: 3 }}>
+            <Image
+              src={"/filter.svg"}
+              height={10}
+              width={10}
+              alt="filter-icon"
+            />{" "}
+            <span style={{ fontSize: 12 }}>Filter</span>
+          </Button>
           <Button>Mark all as read</Button>
         </Flex>
       </Flex>
