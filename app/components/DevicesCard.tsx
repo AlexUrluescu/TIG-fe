@@ -6,6 +6,7 @@ import { DataTable } from "./DataTable";
 import type { ColumnsType } from "antd/es/table";
 import Image from "next/image";
 import StatusTimeline from "./StatusTimeline";
+import { Device } from "@/types/device";
 
 const data = [
   { status: "off", percent: 10 },
@@ -13,60 +14,6 @@ const data = [
   { status: "standby", percent: 30 },
   { status: "off", percent: 10 },
 ] as const;
-
-export const MOCK_DEVICES: Device[] = [
-  {
-    id: "gw-7721",
-    name: "Edge_Node_Alpha",
-    type: "Gateway",
-    status: "failed",
-    clientName: "TechCorp Industries",
-    ipAddress: "192.168.1.105",
-    runtime: "12d 4h 22m",
-    lastUpdate: "2026-02-01 14:30",
-  },
-  {
-    id: "gw-0042",
-    name: "Backup_Sensor_01",
-    type: "Sensor",
-    status: "failed",
-    clientName: "BioHealth Solutions",
-    ipAddress: "10.0.0.12",
-    runtime: "0d 0h 0m",
-    lastUpdate: "2026-01-30 09:15",
-  },
-  {
-    id: "gw-9910",
-    name: "Main_Router_Global",
-    type: "Network",
-    status: "failed",
-    clientName: "Global Logistics",
-    ipAddress: "172.16.254.1",
-    runtime: "45d 12h 0m",
-    lastUpdate: "2026-02-02 11:00",
-  },
-  {
-    id: "ba5e3c86-90f6-4c16-b397-c3c6cb9bc514",
-    name: "vhsk_248",
-    type: "Gateway",
-    status: "failed",
-    clientName: "Security First Inc",
-    ipAddress: "192.168.5.20",
-    runtime: "3d 1h 10m",
-    lastUpdate: "2026-02-02 08:45",
-  },
-];
-
-export type Device = {
-  id: string;
-  name: string;
-  type: string;
-  status: string;
-  clientName: string;
-  ipAddress: string;
-  runtime: string;
-  lastUpdate: string;
-};
 
 interface DownsDevicesCardProps {
   devices: Device[];
@@ -172,7 +119,7 @@ const DevicesCard: React.FC<DownsDevicesCardProps> = ({
   ];
 
   const sortedDevices = useMemo(() => {
-    const data = [...MOCK_DEVICES];
+    const data = [...devices];
 
     data.sort((a, b) => {
       const dateA = new Date(a.lastUpdate).getTime();

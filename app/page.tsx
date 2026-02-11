@@ -4,7 +4,7 @@ import { NotificationsMetricCard } from "./components/NotificationsAlertsCard";
 import { WelcomeHeader } from "./components/WelcomeBack";
 import ResellersCardTabel from "./components/ResellersCard";
 import ClientsCardTabel from "./components/ClientsCard";
-import DevicesCardTabel, { Device } from "./components/DownDevicesCard";
+import DevicesCardTabel from "./components/DownDevicesCard";
 import GatwewaysCard from "./components/GatewayCard";
 import { MOCK_GATEWAYS } from "@/mocks/gateways";
 import { useState } from "react";
@@ -13,6 +13,7 @@ import { Gateway } from "../types/gateway";
 import StatusTimeline from "./components/StatusTimeline";
 import TabsComponent from "./gateways/_components/Tabs";
 import { Client } from "@/types/client";
+import { Device } from "@/types/device";
 
 const data = [
   { status: "off", percent: 10 },

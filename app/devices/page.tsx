@@ -3,10 +3,11 @@ import { useState } from "react";
 import NavBarDevices from "../components/NavBarDevices";
 import { Button, Flex } from "antd";
 import Image from "next/image";
-import { Device } from "../components/DevicesCard";
+
 import DevicesView from "../../views/devices";
 import { userRole } from "@/mocks/userRole";
 import StatusTimeline from "../components/StatusTimeline";
+import { Device } from "@/types/device";
 
 const data = [
   { status: "off", percent: 10 },

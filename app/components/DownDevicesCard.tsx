@@ -7,6 +7,9 @@ import { DataTable } from "./DataTable";
 import type { ColumnsType } from "antd/es/table";
 import Image from "next/image";
 import StatusTimeline from "./StatusTimeline";
+import { useRouter } from "next/navigation";
+import { Device } from "@/types/device";
+import { MOCK_DEVICES } from "@/mocks/devices";
 
 const data = [
   { status: "off", percent: 10 },
@@ -15,65 +18,12 @@ const data = [
   { status: "off", percent: 10 },
 ] as const;
 
-export const MOCK_DEVICES: Device[] = [
-  {
-    id: "gw-7721",
-    name: "Edge_Node_Alpha",
-    type: "Gateway",
-    status: "online",
-    clientName: "TechCorp Industries",
-    ipAddress: "192.168.1.105",
-    runtime: "12d 4h 22m",
-    lastUpdate: "2026-02-01 14:30",
-  },
-  {
-    id: "gw-0042",
-    name: "Backup_Sensor_01",
-    type: "Sensor",
-    status: "failed",
-    clientName: "BioHealth Solutions",
-    ipAddress: "10.0.0.12",
-    runtime: "0d 0h 0m",
-    lastUpdate: "2026-01-30 09:15",
-  },
-  {
-    id: "gw-9910",
-    name: "Main_Router_Global",
-    type: "Network",
-    status: "denied",
-    clientName: "Global Logistics",
-    ipAddress: "172.16.254.1",
-    runtime: "45d 12h 0m",
-    lastUpdate: "2026-02-02 11:00",
-  },
-  {
-    id: "ba5e3c86-90f6-4c16-b397-c3c6cb9bc514",
-    name: "vhsk_248",
-    type: "Gateway",
-    status: "online",
-    clientName: "Security First Inc",
-    ipAddress: "192.168.5.20",
-    runtime: "3d 1h 10m",
-    lastUpdate: "2026-02-02 08:45",
-  },
-];
-
-export type Device = {
-  id: string;
-  name: string;
-  type: string;
-  status: string;
-  clientName: string;
-  ipAddress: string;
-  runtime: string;
-  lastUpdate: string;
-};
-
 interface DevicesCardTabelProps {
   showDrawer: (type: string, device: Device) => void;
 }
 
 const DevicesCardTabel: React.FC<DevicesCardTabelProps> = ({ showDrawer }) => {
+  const router = useRouter();
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
   const columns: ColumnsType<Device> = [
@@ -161,7 +111,9 @@ const DevicesCardTabel: React.FC<DevicesCardTabelProps> = ({ showDrawer }) => {
   ];
 
   const sortedDevices = useMemo(() => {
-    const data = [...MOCK_DEVICES];
+    const data = [
+      ...MOCK_DEVICES.filter((device) => device.status === "failed"),
+    ];
 
     data.sort((a, b) => {
       const dateA = new Date(a.lastUpdate).getTime();
@@ -178,10 +130,10 @@ const DevicesCardTabel: React.FC<DevicesCardTabelProps> = ({ showDrawer }) => {
   }, [sortOrder]);
 
   return (
-    <div className="bg-white rounded-xl w-full flex flex-col h-[338px] px-4 lg:px-6 py-6 my-5 border border-[#DDDDDD]">
+    <div className="bg-white rounded-xl w-full flex flex-col h-[358px] px-4 lg:px-6 py-6 my-5 border border-[#DDDDDD]">
       <Flex justify="space-between" align="center" gap={8} className="mb-4">
         <div className="text-[#333F49] text-xl font-semibold leading-normal tracking-[-0.2px]">
-          Devices
+          Down devices ({sortedDevices.length})
         </div>
 
         <SortButton
@@ -191,7 +143,7 @@ const DevicesCardTabel: React.FC<DevicesCardTabelProps> = ({ showDrawer }) => {
           }
         />
       </Flex>
-      <div className="mt-[5px] mb-6 rounded-xl pb-6 flex-row relative overflow-auto overflow-x-visible flex-1 min-h-0">
+      <div className="mb-6 rounded-xl pb-6 flex-row relative overflow-auto overflow-x-visible flex-1 min-h-0">
         <ConfigProvider
           theme={{
             components: {
@@ -214,6 +166,20 @@ const DevicesCardTabel: React.FC<DevicesCardTabelProps> = ({ showDrawer }) => {
           />
         </ConfigProvider>
       </div>
+      {sortedDevices.length > 0 && (
+        <div
+          style={{ display: "flex", justifyContent: "end" }}
+          className="mt-4 pt-3 border-t border-[#e0e0e0]"
+        >
+          <button
+            onClick={() => router.push("/devices")}
+            className="text-sm text-[#000000] hover:text-[#0539a8] flex items-center gap-1 cursor-pointer"
+          >
+            View all
+            <span>→</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 };
