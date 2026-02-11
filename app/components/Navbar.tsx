@@ -81,10 +81,16 @@ const NavBar = ({ isExpanded = false, onToggle }: NavBarProps) => {
 
   function isRoute(pathname: string, route: string): boolean {
     if (route === ROUTES.DEVICES) {
-      return (
-        pathname === ROUTES.DEVICES || pathname.startsWith(`${ROUTES.DEVICES}/`)
-      );
+      const deviceRelatedPaths = [
+        ROUTES.DEVICES,
+        ROUTES.GATEWAYS,
+        ROUTES.CLIENTS,
+        ROUTES.ORGANISATIONS,
+      ];
+
+      return deviceRelatedPaths.some((path) => pathname.startsWith(path));
     }
+
     return pathname === route;
   }
 
