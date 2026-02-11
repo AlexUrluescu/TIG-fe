@@ -13,7 +13,6 @@ import Image from "next/image";
 const ROUTES = {
   HOME: "/",
   LOGIN: "/login",
-
   DEVICES: "/devices",
   ORGANISATIONS: "/organisations",
   GATEWAYS: "/gateways",
@@ -218,8 +217,17 @@ const NavBar = ({ isExpanded = false, onToggle }: NavBarProps) => {
           })}
         </Flex>
       </Flex>
-      <Flex>
-        <span>Log out</span>
+      <Flex
+        justify="center"
+        style={{ background: "#333F49", padding: "15px 0px", width: "100%" }}
+      >
+        <Image
+          style={{ marginRight: 5 }}
+          src={"/logout.svg"}
+          height={20}
+          width={20}
+          alt="logout icon"
+        />
       </Flex>
     </Flex>
   );
